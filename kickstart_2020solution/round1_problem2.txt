@@ -1,0 +1,37 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+int revalute(vector<vector<int>>&dp,int ind,int take,vector<vector<int>>&sta,
+int n,int k){
+    if(take<0)
+    return -2e9;
+    if(ind>n || take==0)
+    return 0;
+    if(dp[ind][take]!=-1)
+    return dp[ind][take];
+    int val=0;
+    for(int i=0;i<=k;i++){
+        val+=sta[ind][i];
+        dp[ind][take]=max(dp[ind][take],val+revalute(
+            dp,ind+1,take-i,sta,n,k));
+    }
+    return dp[ind][take];
+}
+int main(){
+    int t;
+    cin>>t;
+    int l=1;
+    while(t--){
+        int n,k,p;
+        cin>>n>>k>>p;
+        vector<vector<int>>sta(n+1,vector<int>(k+1,0));
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=k;j++)
+            cin>>sta[i][j];
+        }
+        vector<vector<int>>dp(n+1,vector<int>(p+1,-1));
+        int res=revalute(dp,1,p,sta,n,k);
+        cout<<"Case #"<<l<<": "<<res<<endl;
+       l++; 
+    }
+}
